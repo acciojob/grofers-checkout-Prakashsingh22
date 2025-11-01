@@ -1,24 +1,35 @@
-// Select all the price cells
-const prices = document.querySelectorAll(".price");
+function calculateTotal() {
+      // Remove any existing total row before recalculating
+      const existingTotal = document.querySelector('.total-row');
+      if (existingTotal) existingTotal.remove();
 
-let total = 0;
+      // Select all price cells
+      const prices = document.querySelectorAll('.prices');
+      let total = 0;
 
-// Add all prices
-prices.forEach(priceCell => {
-  total += Number(priceCell.textContent);
-});
+      // Add up all prices
+      prices.forEach(priceCell => {
+        const value = parseFloat(priceCell.textContent) || 0;
+        total += value;
+      });
 
-// Create a new row for the total
-const totalRow = document.createElement("tr");
-totalRow.classList.add("total-row");
+      // Create new row and cell for total
+      const table = document.getElementById('groceryTable');
+      const totalRow = document.createElement('tr');
+      totalRow.classList.add('total-row');
 
-// Create a cell to show the total text
-const totalTextCell = document.createElement("td");
-totalTextCell.setAttribute("colspan", "2");
-totalTextCell.textContent = `Total Price: Rs ${total}`;
+      const totalCell = document.createElement('td');
+      totalCell.colSpan = 2;
+      totalCell.textContent = `Total Price: ₹${total}`;
 
-// Append the total cell to the row
-totalRow.appendChild(totalTextCell);
+      totalRow.appendChild(totalCell);
+      table.appendChild(totalRow);
+    }
 
-// Append the row to the table
-document.querySelector("table").appendChild(totalRow);
+    // Run once on load
+    calculateTotal();
+
+    // Recalculate whenever a price cell changes
+    document.querySelectorAll('.prices').forEach(cell => {
+      cell.addEventListener('input', calculateTotal);
+    });
