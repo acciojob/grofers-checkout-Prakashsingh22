@@ -1,35 +1,35 @@
 function calculateTotal() {
-      // Remove any existing total row before recalculating
+      // Remove existing total row (if already added)
       const existingTotal = document.querySelector('.total-row');
       if (existingTotal) existingTotal.remove();
 
-      // Select all price cells
+      // Get all prices
       const prices = document.querySelectorAll('.prices');
       let total = 0;
 
-      // Add up all prices
+      // Sum all numeric price values
       prices.forEach(priceCell => {
         const value = parseFloat(priceCell.textContent) || 0;
         total += value;
       });
 
-      // Create new row and cell for total
-      const table = document.getElementById('groceryTable');
+      // Create a new row for total
       const totalRow = document.createElement('tr');
       totalRow.classList.add('total-row');
 
       const totalCell = document.createElement('td');
-      totalCell.colSpan = 2;
+      totalCell.colSpan = 2; // single cell across both columns
       totalCell.textContent = `Total Price: ₹${total}`;
 
+      // Append new row to table
       totalRow.appendChild(totalCell);
-      table.appendChild(totalRow);
+      document.getElementById('groceryTable').appendChild(totalRow);
     }
 
-    // Run once on load
+    // Initial total calculation
     calculateTotal();
 
-    // Recalculate whenever a price cell changes
+    // Recalculate whenever a price changes
     document.querySelectorAll('.prices').forEach(cell => {
       cell.addEventListener('input', calculateTotal);
     });
